@@ -1,16 +1,5 @@
-##First set working directory to where data is stored on computer.
-data<-read.csv("household_power_consumption.txt", sep = ";")
-## Trim down the dates that are needed to create the plots.
-subset<- data[data$Date %in% c("1/2/2007","2/2/2007") ,]
-
-
-
-
-## Converting dates
-datetime <- paste(as.Date(subset$Date), subset$Time)
-subset$Datetime <- as.POSIXct(datetime)
-subset$Timestamp <-paste(subset$Date, subset$Time)
-
-plot(strptime(subset$Timestamp, "%d/%m/%Y %H:%M:%S"), subset$Global_active_power, type = "l", xlab = "", ylab = "Global Active Power(kilowatts)")
-dev.copy(png, file="plot2.png", height=480, width=480)
-dev.off()
+#uses data previously sourced from plot 1.
+sub1 <- subset(NEI, fips == "24510")
+balt <- tapply(sub1$Emissions, sub1$year, sum)
+plot(balt, type = "o", main = "Total PM2.5 Emissions in Baltimore County", xlab = "Year", ylab = "PM2.5 Emissions", pch = 18, col = "darkgreen", lty = 5)
+png(filename = "plot2.png")
